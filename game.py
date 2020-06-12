@@ -31,9 +31,9 @@ class game:
         self.winner = self.update_sup_board()
 
         while self.winner == 0:
-            self.playeR_move(self.turn)
+            self.player_move(self.turn)
             self.turn = self.turn % 2 + 1
-            self.winner = self.update_sup_boars()
+            self.winner = self.update_sup_board()
 
 
 
@@ -42,7 +42,7 @@ class game:
         availible = np.ones(shape = (9, 9))
         availible[np.repeat(np.repeat(self.sup_board, 2, axis = 0), 2, axis = 1) != 0] = 0 
         availible[self.board != 0] = 0
-        return self.availible_moves = availible
+        self.availible = availible
 
 
     def player_move(self, number = 1):
@@ -55,14 +55,25 @@ class game:
     def eval_board(self, board):
         # Check if player 1 has three in a row
         ones = board == 1
-        longest = np.max(np.sum(ones, axis = 0). np.sum(ones, axis = 1), np.sum(ones[i, i] for i in range(3)), np.sum(ones[i, 2 -i] for i in range(2)))
-        if longest == 3:
+        hori = np.max(np.sum(ones, axis = 0))
+        vert = np.max(np.sum(ones, axis = 1))
+        diag = np.max([np.sum([ones[i, i] for i in range(3)]), np.sum([ones[i, 2 -i] for i in range(2)])])
+
+        longest_1 = np.max([hori, vert, diag])
+        
+        if longest_1 == 3:
             return 1
         
         # Heck if player 2 has three in a row
         twos = board == 2
-        longest = np.max(np.sum(twos, axis = 0). np.sum(twos, axis = 1), np.sum(twos[i, i] for i in range(3)), np.sum(twos[i, 2 -i] for i in range(2)))
-        if longest == 3:
+
+        hori = np.max(np.sum(twos, axis = 0))
+        vert = np.max(np.sum(twos, axis = 1))
+        diag = np.max([np.sum([twos[i, i] for i in range(3)]), np.sum([twos[i, 2 -i] for i in range(2)])])
+
+        longest_2 = np.max([hori, vert, diag])
+
+        if longest_2 == 3:
             return 2
         else:
             return 0
@@ -73,14 +84,14 @@ class game:
         Update the super_board
         """
         # Updating the super board by looking at 3x3 fields of the total board
-        for i, j, value in np.ndenumerate(self.sup_board):
+        for i, value in np.ndenumerate(self.sup_board):
             if value != 0:
-                self.sup_board[i, j] = self.eval_board(self.board[i * 3: (i +1) * 3, j * 3 : (j+1) * 3])
+                self.sup_board[i] = self.eval_board(self.board[i[0] * 3: (i[0] +1) * 3, i[1] * 3 : (i[1]+1) * 3])
             else:
                 continue
         
         # Check for tal winner
-        return self.eval_board(self.board(self.sup_board))
+        return self.eval_board(self.sup_board)
 
 
     def manual(self):
