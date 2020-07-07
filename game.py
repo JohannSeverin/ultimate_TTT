@@ -36,8 +36,6 @@ class game:
             self.winner = self.update_sup_board()
 
 
-
-
     def availible_moves(self):
         availible = np.ones(shape = (9, 9))
         availible[np.repeat(np.repeat(self.sup_board, 2, axis = 0), 2, axis = 1) != 0] = 0 

@@ -1,7 +1,13 @@
 import sys
 import random as rng
 import numpy as np
+import pandas as pd
+import os
 
+data = {'board': [],
+        'ts':    [],
+        'move':  [],
+        'winner': 0}
 
 board = [] 
 won = []
@@ -16,44 +22,14 @@ for i in range(9):
 for i in range(9):
     for j in range(9):
         board[i].append(0)
-# Du kan enten bruge numpy array med np.zeros for at gøre det hurtigere eller
-# det er muligt at skrive board = [[0] * 9] * 9, for at få samme resultat. 
-# (Har prøvet dette men giver vildt mærkelige resultater som jeg ikke kan få til at give mening.
-# det gør at player 1 tager et træk på alle bordene på samme tid.)
 
-
-
-# Skriv lidt dokumentation, hvad skal til B og t være ;)
-# def Player1(B, t):
-#     if t == 9:
-#         for i in range(9):
-#             if won[i] == 0 and any((True for x in B[i] if x == 0)) == True:
-#                 a = i
-#                 break
-#     else:
-#         a = t
-#     b = B[a].index(0)
-#     return a,b
-
-# def Player2(B,t):
-#     if t == 9:
-#         list = []
-#         for i in range(9):
-#             if won[i] == 0 and any((True for x in B[i] if x == 0)) == True:
-#                 list.append(i)
-#         a = rng.choice(list)
-#     else:
-#         a = t
-#     list =[]
-#     for i in range(9):
-#         if B[a][i] == 0:
-#             list.append(i)
-#     b = rng.choice(list)
-#     return a,b
 
 from Johanns_funktioner import Player1, Player2 # De to funktioner fra player_generation importeres
 
+
 while winner == 0:
+    data['board'].append(board)
+    data['ts'].append(T)
     if tur ==1:
         a,b = Player1(board,T, won)
     elif tur == 2:
@@ -69,6 +45,7 @@ while winner == 0:
         print(f'Player{tur} prøver at tage på et vundet mini spil')
         sys.exit()
     board[a][b] = tur # Trækket tages
+    data['move'].append((a, b))
     ### Tjekker om der er nogen der har vundet på mini borene 
     for i in range(9):
         if won[i] == 0:
@@ -123,8 +100,8 @@ while winner == 0:
     elif [won[2],won[4],won[6]] == [2,2,2]:
         winner = 2
     if any((True for x in won if x == 0)) == False:
-        print('TIE')
-        print(board)
+        # print('TIE')
+        # print(board)
         sys.exit()
     ## Opdatere hvad det tvungne local board er
     if won[b] != 0 or any((True for x in board[b] if x == 0)) == False: # bestemmer hvad det tvungne local board er, hvis local boardet er vundet eller uafgjort bliver T=9 hvilket svare til fri.
@@ -139,8 +116,12 @@ while winner == 0:
 
         
 if winner != 0:
-    print(f'AND THE WINNER IS ......... PLAYER {winner}')
-    print(board)
+    data['winner'] = winner
+    pd.to_pickle(data, "data/game{:04d}".format(len(os.listdir('data/')) + 1))
+    # print(len(os.listdir('data')))
+    sys.exit()
+    # print(f'AND THE WINNER IS ......... PLAYER {winner}')
+    # print(board)
 
 
 

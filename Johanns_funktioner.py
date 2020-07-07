@@ -10,6 +10,7 @@ def tree_explorer(board, t, depth = 0, move_list = None):
 	else:
 		avail = availible_moves(board, t)
 		for a in avail:
+			pass
 			
 
 
