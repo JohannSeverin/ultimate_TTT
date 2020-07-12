@@ -5,8 +5,10 @@ import pandas as pd
 import os
 
 data = {'board': [],
+        'gl_board': [],
         'ts':    [],
         'move':  [],
+        'tur':   [],
         'winner': 0}
 
 board = [] 
@@ -30,6 +32,8 @@ from Johanns_funktioner import Player1, Player2 # De to funktioner fra player_ge
 while winner == 0:
     data['board'].append(board)
     data['ts'].append(T)
+    data['gl_board'].append(won)
+    data['tur'].append(tur)
     if tur ==1:
         a,b = Player1(board,T, won)
     elif tur == 2:
@@ -117,7 +121,7 @@ while winner == 0:
         
 if winner != 0:
     data['winner'] = winner
-    pd.to_pickle(data, "data/game{:04d}".format(len(os.listdir('data/')) + 1))
+    pd.to_pickle(data, "data/game{:06d}".format(len(os.listdir('data/')) + 1))
     # print(len(os.listdir('data')))
     sys.exit()
     # print(f'AND THE WINNER IS ......... PLAYER {winner}')
