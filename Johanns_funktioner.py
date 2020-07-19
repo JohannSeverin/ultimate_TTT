@@ -59,27 +59,26 @@ def glob_update(board):
 	return glob_board
 
 
-def availible_moves(board, t):
-	# Return all availible moves in a, b format.
-	# Return None if no moves are availible
+def availible_moves(board, t, won):
+    # Return all availible moves in a, b format.
+    # Return None if no moves are availible
 
-	if t == 9: # Return all availible fields if no board is forced
-		moves = []
-		glob = glob_update(board)
-		for i in range(len(board)):
-			if glob[i] == 0:
-				bs = np.array(board[i]) == 0
-				moves.extend([(i, b) for b in bs.nonzero()[0]])
-		return moves
+    if t == 9: # Return all availible fields if no board is forced
+        moves = []
+        for i in range(len(board)):
+            if won[i] == 0:
+                bs = np.array(board[i]) == 0
+                moves.extend([i * 9 + b for b in bs.nonzero()[0]])
+        return moves
+    else:    # Return field in the forced board
+        local = board[t]
+        a = t
+        bs = np.array(local) == 0
+        if np.sum(bs) == 0:
+            return None
+        else:
+            return [a * 9 +  b for b in bs.nonzero()[0]]
 
-	else:	 # Return field in the forced board
-		local = board[t]
-		a = t
-		bs = np.array(local) == 0
-		if np.sum(bs) == 0:
-			return None
-		else:
-			return [(a, b) for b in bs.nonzero()[0]]
 
 
 def Player1(B, t, won):
