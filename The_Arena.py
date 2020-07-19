@@ -4,6 +4,8 @@ import numpy as np
 import pandas as pd
 import os
 
+from config import data_path
+
 data = {'board': [],
         'gl_board': [],
         'ts':    [],
@@ -26,8 +28,7 @@ for i in range(9):
         board[i].append(0)
 
 
-from Johanns_funktioner import Player1, Player2 # De to funktioner fra player_generation importeres
-
+exec(open("func_load.py").read())
 
 while winner == 0:
     data['board'].append(board)
@@ -106,7 +107,8 @@ while winner == 0:
     if any((True for x in won if x == 0)) == False:
         # print('TIE')
         # print(board)
-        sys.exit()
+        # sys.exit()
+        break
     ## Opdatere hvad det tvungne local board er
     if won[b] != 0 or any((True for x in board[b] if x == 0)) == False: # bestemmer hvad det tvungne local board er, hvis local boardet er vundet eller uafgjort bliver T=9 hvilket svare til fri.
         T = 9
@@ -121,9 +123,14 @@ while winner == 0:
         
 if winner != 0:
     data['winner'] = winner
-    pd.to_pickle(data, "data/game{:06d}".format(len(os.listdir('data/')) + 1))
+    if data_path:
+        pd.to_pickle(data, data_path + "/game{:06d}".format(len(os.listdir(data_path)) + 1))
+
+if 'counter' in dir():
+    counter[str(winner)] += 1
+
     # print(len(os.listdir('data')))
-    sys.exit()
+    # sys.exit()
     # print(f'AND THE WINNER IS ......... PLAYER {winner}')
     # print(board)
 
