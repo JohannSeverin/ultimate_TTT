@@ -83,17 +83,11 @@ print("Training initial model")
 
 from lightgbm import LGBMClassifier
 
-model = LGBMClassifier(device = 'gpu', verbosity = 1, max_depth = 6)
+model = LGBMClassifier(max_depth = 6, num_leaves = 150, device = 'gpu')
 
 model.fit(np.array(player_vect), np.array(player_label))
 
-print("Training done")
 
-if "models" not in os.listdir():
-    os.mkdir('models')
-
-
-pd.to_pickle(model, 'models/model000')
 
 from Johanns_funktioner import glob_update, availible_moves
 

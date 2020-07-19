@@ -28,15 +28,63 @@ file = open("config.py", 'w+')
 file.write(config)
 file.close()
 
+print(f"Generating data with random player: {amount} games")
+
+if "data" not in os.listdir():
+    os.mkdir("data")
+
+for game in range(amount // 2):
+    if game / amount * 100 % 10 == 0:
+        print(f"{game / amount * 100}% games done") 
+    exec(open("The_Arena.py").read())
+
+
+config = f"""
+data_path = 'data' 
+player1 = "functions/lightgbm/{filepath}"
+player2 = "functions/player2_rand.dat"
+"""
+
+if "config.py" in os.listdir():
+	os.remove("config.py")
+
+file = open("config.py", 'w+')
+file.write(config)
+file.close()
+
+if "data" not in os.listdir():
+    os.mkdir("data")
+
+for game in range(amount // 2, amount // 4 * 3):
+    if game / amount * 100 % 10 == 0:
+        print(f"{game / amount * 100}% games done") 
+    exec(open("The_Arena.py").read())
+
+
+config = f"""
+data_path = 'data' 
+player1 = "functions/player1_rand.dat"
+player2 = "functions/lightgbm/{filepath}"
+"""
+
+if "config.py" in os.listdir():
+	os.remove("config.py")
+
+file = open("config.py", 'w+')
+file.write(config)
+file.close()
+
 print(f"Generating data: {amount} games")
 
 if "data" not in os.listdir():
     os.mkdir("data")
 
-for game in range(amount):
+for game in range(amount // 3 * 4, amount):
     if game / amount * 100 % 10 == 0:
         print(f"{game / amount * 100}% games done") 
     exec(open("The_Arena.py").read())
+
+
 
 
 files = os.listdir("data")
@@ -65,7 +113,7 @@ print(f"Training model: {model_num}")
 
 from lightgbm import LGBMClassifier
 
-model = LGBMClassifier()
+model = LGBMClassifier(max_depth = 6, num_leaves = 150, device = 'gpu')
 
 model.fit(np.array(player_vect), np.array(player_label))
 
@@ -96,5 +144,5 @@ byte = dill.dumps(Player, recurse = True)
 dill.dump(byte, file)
 file.close()
 
-os.system("rm -r data/")
+# os.system("rm -r data/")
 

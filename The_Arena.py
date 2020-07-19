@@ -4,9 +4,12 @@ import numpy as np
 import pandas as pd
 import os
 import dill
+import importlib
 
-from config import data_path, player1, player2
 
+import config
+importlib.reload(config)
+data_path, player1, player2 = config.data_path, config.player1, config.player2
 
 byte = dill.load(open(player1, 'rb'))
 Player1 = dill.loads(byte)
