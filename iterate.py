@@ -4,7 +4,7 @@ import os
 import runpy
 import dill
 
-amount = 100
+amount = 1000
 
 models = os.listdir("functions/lightgbm")
 models.sort()

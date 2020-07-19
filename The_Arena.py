@@ -7,6 +7,7 @@ import dill
 
 from config import data_path, player1, player2
 
+
 byte = dill.load(open(player1, 'rb'))
 Player1 = dill.loads(byte)
 

@@ -1,4 +1,4 @@
 
-data_path = None 
-player1 = "functions/lightgbm/function002.dat"
-player2 = "functions/lightgbm/function002.dat"
+data_path = 'init_data' 
+player1 = "functions/player1_rand.dat"
+player2 = "functions/player2_rand.dat"

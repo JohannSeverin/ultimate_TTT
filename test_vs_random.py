@@ -11,7 +11,7 @@ model = f"functions/lightgbm/{filepath}"
 
 
 config = f"""
-data_path = None 
+data_path = False 
 player1 = "{model}"
 player2 = "functions/player2_rand.dat"
 """
@@ -33,7 +33,7 @@ print(f"Player1 vs. Random: {counter}")
 
 
 config = f"""
-data_path = None 
+data_path = False 
 player1 = "functions/player1_rand.dat"
 player2 = "{model}"
 """
@@ -56,7 +56,7 @@ print(f"Player2 vs. random: {counter}")
 
 
 config = f"""
-data_path = None 
+data_path = False 
 player1 = "{model}"
 player2 = "{model}"
 """

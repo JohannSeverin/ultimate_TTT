@@ -4,7 +4,7 @@ import os
 import runpy
 import dill
 
-init_amount = 100
+init_amount = 1000
 
 # Make folder if none
 if 'init_data' not in os.listdir():
@@ -83,7 +83,7 @@ print("Training initial model")
 
 from lightgbm import LGBMClassifier
 
-model = LGBMClassifier()
+model = LGBMClassifier(device = 'gpu', verbosity = 1, max_depth = 6)
 
 model.fit(np.array(player_vect), np.array(player_label))
 
@@ -118,7 +118,7 @@ dill.dump(byte, file)
 file.close()
 
 config = """
-data_path = 'init_data' 
+data_path = False
 player1 = "functions/lightgbm/function000.dat"
 player2 = "functions/lightgbm/function000.dat"
 """
