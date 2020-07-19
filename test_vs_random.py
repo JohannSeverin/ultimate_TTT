@@ -1,12 +1,18 @@
-rounds = 250
-
-model = "lightgbm_function000.dat"
+rounds = 100
 
 import os
 
+models = os.listdir("functions/lightgbm")
+models.sort()
+
+filepath = models[-1]
+
+model = f"functions/lightgbm/{filepath}"
+
+
 config = f"""
 data_path = None 
-player1 = "functions/{model}"
+player1 = "{model}"
 player2 = "functions/player2_rand.dat"
 """
 
@@ -29,7 +35,7 @@ print(f"Player1 vs. Random: {counter}")
 config = f"""
 data_path = None 
 player1 = "functions/player1_rand.dat"
-player2 = "functions/{model}"
+player2 = "{model}"
 """
 
 
@@ -51,8 +57,8 @@ print(f"Player2 vs. random: {counter}")
 
 config = f"""
 data_path = None 
-player1 = "functions/{model}"
-player2 = "functions/{model}"
+player1 = "{model}"
+player2 = "{model}"
 """
 
 

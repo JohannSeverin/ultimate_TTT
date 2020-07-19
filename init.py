@@ -4,6 +4,8 @@ import os
 import runpy
 import dill
 
+init_amount = 100
+
 # Make folder if none
 if 'init_data' not in os.listdir():
 	os.mkdir("init_data")
@@ -41,7 +43,7 @@ byte = dill.dumps(Player2, recurse = True)
 dill.dump(byte, file)
 file.close()
 
-init_amount = 1000
+
 
 print(f"Generating initial data: {init_amount} games")
 
@@ -106,15 +108,19 @@ def Player(board, t, won):
     return choice // 9, choice % 9
 
 
-file = open("functions/lightgbm_function000.dat", 'wb')
+if "lightgbm" not in os.listdir("functions"):
+    os.mkdir("functions/lightgbm")
+
+
+file = open("functions/lightgbm/function000.dat", 'wb')
 byte = dill.dumps(Player, recurse = True)
 dill.dump(byte, file)
 file.close()
 
 config = """
 data_path = 'init_data' 
-player1 = "functions/lightgbm_function000.dat"
-player2 = "functions/lightgbm_function000.dat"
+player1 = "functions/lightgbm/function000.dat"
+player2 = "functions/lightgbm/function000.dat"
 """
 
 if "config.py" in os.listdir():
@@ -127,13 +133,5 @@ file.close()
 
 print("Model saved")
 print("Initialize complete")
-
-
-counter = {'0':0, '1':0, '2':0}
-
-for i in range(100):
-    exec(open("The_Arena.py").read())
-
-print(counter)
 
 os.system("rm -r init_data/")
