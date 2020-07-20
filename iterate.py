@@ -28,10 +28,6 @@ file = open("config.py", 'w+')
 file.write(config)
 file.close()
 
-print(f"Generating data with random player: {amount} games")
-
-if "data" not in os.listdir():
-    os.mkdir("data")
 
 for game in range(amount // 2):
     if game / amount * 100 % 10 == 0:
@@ -52,9 +48,6 @@ file = open("config.py", 'w+')
 file.write(config)
 file.close()
 
-if "data" not in os.listdir():
-    os.mkdir("data")
-
 for game in range(amount // 2, amount // 4 * 3):
     if game / amount * 100 % 10 == 0:
         print(f"{game / amount * 100}% games done") 
@@ -74,12 +67,8 @@ file = open("config.py", 'w+')
 file.write(config)
 file.close()
 
-print(f"Generating data: {amount} games")
 
-if "data" not in os.listdir():
-    os.mkdir("data")
-
-for game in range(amount // 3 * 4, amount):
+for game in range(amount // 4 * 3, amount):
     if game / amount * 100 % 10 == 0:
         print(f"{game / amount * 100}% games done") 
     exec(open("The_Arena.py").read())
@@ -113,7 +102,11 @@ print(f"Training model: {model_num}")
 
 from lightgbm import LGBMClassifier
 
-model = LGBMClassifier(max_depth = 6, num_leaves = 150, device = 'gpu')
+valid_values = set(player_label)
+valid_values = list(valid_values)
+valid_values.sort()
+
+model = LGBMClassifier(max_depth = 5, num_leaves = 30, device = 'gpu')
 
 model.fit(np.array(player_vect), np.array(player_label))
 
@@ -130,11 +123,20 @@ from Johanns_funktioner import glob_update, availible_moves
 def Player(board, t, won):
     avail = availible_moves(board, t, won)
     
-    x = np.concatenate([np.array([board]).ravel(), np.array(t).ravel(), np.array(won).ravel()])
-    y = model.predict_proba(x.reshape(1, 91))[0][avail]
-    
-    choice = np.random.choice(avail, p = y / sum(y))
 
+    x = np.concatenate([np.array([board]).ravel(), np.array(t).ravel(), np.array(won).ravel()])
+    y = model.predict_proba(x.reshape(1, 91))[0]
+
+    prob_array = np.zeros(81)
+    prob_array[np.array(valid_values)] = y
+    prob_array = prob_array[avail]
+    if sum(prob_array) != 0:
+        try:
+            choice = np.random.choice(avail, p = prob_array / sum(prob_array))
+        except:
+            choice = np.random.choice(avail)
+    else:
+        choice = np.random.choice(avail)    
     return choice // 9, choice % 9
 
 

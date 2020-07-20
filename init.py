@@ -83,7 +83,7 @@ print("Training initial model")
 
 from lightgbm import LGBMClassifier
 
-model = LGBMClassifier(max_depth = 6, num_leaves = 150, device = 'gpu')
+model = LGBMClassifier(max_depth = 5, num_leaves = 64, device = 'gpu', n_classes = 81)
 
 model.fit(np.array(player_vect), np.array(player_label))
 

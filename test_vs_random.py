@@ -51,7 +51,7 @@ counter = {'0':0, '1':0, '2':0}
 for i in range(rounds):
     exec(open("The_Arena.py").read())
 
-print(f"Player2 vs. random: {counter}")
+print(f"Player2 vs. Random: {counter}")
 
 
 
